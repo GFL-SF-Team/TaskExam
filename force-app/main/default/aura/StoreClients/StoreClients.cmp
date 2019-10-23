@@ -1,0 +1,30 @@
+<aura:component>
+
+    <aura:attribute name="clients" type="List" />
+    <aura:registerEvent name="SelectedIdEvent" type="c:StoreEventMap" />
+
+    <aura:method name="setClients" action="{!c.handleClients}">
+        <aura:attribute name="clients" type="List" />
+    </aura:method>
+
+    <div>
+        <lightning:verticalNavigation onselect="{!c.handleSelect}">
+            <lightning:verticalNavigationSection label="Clients:">
+                <aura:if isTrue="{! not(empty(v.clients))}">
+    
+                    <aura:iteration items="{!v.clients}" var="client">
+                        
+                        <lightning:verticalNavigationItem label="{!client.clientName}" name="{!client.clientId}"  />
+
+                    </aura:iteration>
+
+                    <aura:set attribute="else">
+                        Empty clients list
+                    </aura:set>
+                </aura:if>
+
+            </lightning:verticalNavigationSection>
+        </lightning:verticalNavigation>
+    </div>
+   
+</aura:component>	

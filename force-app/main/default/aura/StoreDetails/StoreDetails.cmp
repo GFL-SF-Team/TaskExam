@@ -1,0 +1,127 @@
+<aura:component>
+
+    <aura:attribute name="clientContent" type="Contact" />
+
+    <aura:registerEvent name="SelectedDetailItemEvent" type="c:StoreEventMap" />
+    <aura:registerEvent name="SetNewCar" type="c:StoreEventMap" />
+    <aura:registerEvent name="SetNewOrder" type="c:StoreEventMap" />
+    <aura:registerEvent name="SetNewClientItem" type="c:StoreEventMap" />
+
+    <aura:method name="setClient" action="{!c.handleSetClient}">
+        <aura:attribute name="client" type="Contact" />
+    </aura:method>
+
+    <aura:if isTrue="{! not(empty(v.clientContent))}">
+
+        <div class="slds-text-title_caps slds-p-around_medium">
+            Client - {!v.clientContent.clientName}
+        </div>
+
+        <lightning:tabset variant="scoped">
+            <lightning:tab label="Cars">
+
+                <div class="slds-text-align_center slds-p-around_small">
+                    <lightning:button label="Add New Order" onclick="{!c.handleAddCar}">
+                        <span class="slds-p-around_xxx-small">
+                            <lightning:icon iconName="action:new" alternativeText="Add New Car" size="xx-small"/>
+                        </span>
+                        
+                        Add New Car
+                    </lightning:button>
+                </div>
+
+                <div>
+                    <lightning:verticalNavigation onselect="{!c.handleSelectCar}">
+                        <lightning:verticalNavigationSection>
+
+                            <aura:if isTrue="{! not(empty(v.clientContent.cars)) }">
+                                <aura:iteration items="{!v.clientContent.cars}" var="car">
+                                    <lightning:verticalNavigationItem label="{!car.brand + ' ' + car.model + ' ' + car.type}" name="{!car.carId}" />
+                                </aura:iteration>
+
+                                <aura:set attribute="else">
+                                    Client doesn't have cars yet
+                                </aura:set>
+                            </aura:if>
+            
+                        </lightning:verticalNavigationSection>
+                    </lightning:verticalNavigation>
+                </div>
+
+                
+            </lightning:tab>
+            <lightning:tab label="Orders">
+                <div>
+                    <div class="slds-text-align_center slds-p-around_small">
+                        <lightning:button label="Add New Order" onclick="{!c.handleAddOrder}">
+                            <span class="slds-p-around_xxx-small">
+                                <lightning:icon iconName="action:record" alternativeText="Add New Order" size="xx-small" />
+                            </span>
+                            Add New Order
+                        </lightning:button>
+                    </div>
+
+                    <lightning:verticalNavigation>
+
+                        <aura:if isTrue="{! not(empty(v.clientContent.orders)) }">
+                            <aura:iteration items="{!v.clientContent.orders}" var="order">
+
+                                <lightning:verticalNavigationSection >
+                                    <lightning:layout horizontalAlign="spread">
+                                        <lightning:layoutItem >
+                                            <lightning:verticalNavigationItemBadge  
+                                                label="{!order.clientOrderNumber}" 
+                                                name="{!order.clientOrderId}" 
+                                                title="{!order.description}"
+                                                badgeCount="{!order.totalPrice}"
+                                            />
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem >
+                                            <lightning:button label="Add New Part" value="{!order.clientOrderId}" onclick="{!c.handleAddPartToOrder}" >
+                                                <span class="slds-p-around_xxx-small">
+                                                    <lightning:icon iconName="action:add_relationship" alternativeText="Add New Part" size="xx-small" />
+                                                </span>
+                                                Add New Part
+                                            </lightning:button>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+
+                                </lightning:verticalNavigationSection>
+
+                                <lightning:verticalNavigationOverflow>
+                                    <div>
+                                        Price:
+                                        <ui:outputCurrency value="{!order.totalPrice}"/>
+                                    </div>
+                                    <div>
+                                        Description: {!order.description}
+                                    </div>
+                                </lightning:verticalNavigationOverflow>
+
+                            </aura:iteration>
+
+                            <aura:set attribute="else">
+                                Client doesn't have orders yet
+                            </aura:set>
+
+                        </aura:if>
+            
+                    </lightning:verticalNavigation>
+                </div>
+            </lightning:tab>
+
+        </lightning:tabset>
+
+        <aura:set attribute="else">
+            <div class="slds-text-title_caps slds-p-around_medium">
+                Choose a customer
+            </div>
+            <div>
+                <img src="{!$Resource.previewImg}"/>
+            </div>
+        </aura:set>
+
+    </aura:if>
+
+
+</aura:component>

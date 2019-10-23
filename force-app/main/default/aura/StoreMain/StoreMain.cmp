@@ -1,0 +1,31 @@
+<aura:component implements="force:appHostable" access="global" controller="L_StoreController">
+
+    <aura:attribute name="dataBundle" type="Map" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div>
+        <c:StoreModalContent aura:id="StoreModalContent" RefreshClientsData="{!c.refreshClientData}"/>
+    </div>
+
+    <div class="slds-box slds-theme_default">
+
+        <lightning:layout horizontalAlign="start">
+
+            <lightning:layoutItem padding="around-medium" size="3">
+                <div>
+                    <c:StoreClients aura:id="storeClientComponent" SelectedIdEvent="{!c.handleSelectedClient}"/>
+                </div>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem padding="around-medium" flexibility="auto" size="9">
+                <div>
+                    <c:StoreDetails aura:id="storeDetailsComponent" SetNewClientItem="{!c.handleSetClientItem}" />
+                </div>
+            </lightning:layoutItem>
+
+        </lightning:layout>
+
+    </div>
+
+</aura:component>	

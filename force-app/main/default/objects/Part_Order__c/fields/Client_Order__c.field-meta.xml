@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Order__c</fullName>
+    <externalId>false</externalId>
+    <label>Client Order</label>
+    <referenceTo>Client_Order__c</referenceTo>
+    <relationshipLabel>Parts Order</relationshipLabel>
+    <relationshipName>Parts_Order</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

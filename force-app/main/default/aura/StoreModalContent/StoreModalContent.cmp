@@ -1,0 +1,63 @@
+<aura:component>
+
+    <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="actionType" type="String" />
+    <aura:attribute name="objectApiName" type="String" />
+    <aura:attribute name="newItem" type="Object" />
+    <aura:attribute name="fields" type="String[]" />
+    <aura:attribute name="clientId" type="String" />
+    <aura:attribute name="clientOrderId" type="String" />
+
+    <aura:registerEvent name="RefreshClientsData" type="c:StoreEventMap" />
+
+    <aura:method name="setModal" action="{!c.handleSetModal}">
+        <aura:attribute name="params" type="Map" />
+    </aura:method>
+
+    <aura:if isTrue="{!v.showModal}">
+
+        <div class="custom-modal">
+            <section role="dialog" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <span class="slds-modal__close" onclick="{!c.handleCancel}" style="cursor: pointer;" title="Close">
+                            <lightning:icon iconName="utility:close" variant="inverse" alternative-text="close" size="small"></lightning:icon>
+                        </span>
+                        <h2 class="slds-text-heading_medium slds-hyphenate">{!(v.actionType == 'AddNewCar')? 'Add New Car' : 'Add New Order'}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+
+                        <lightning:recordEditForm 
+                            aura:id="myRecordForm" 
+                            objectApiName="{!v.objectApiName}" 
+                            onsuccess="{!c.handleSuccess}">
+
+                            <aura:iteration items="{!v.fields}" var="field">
+                                    
+                                <aura:if isTrue="{!and(notequals(field, 'Client__c'), notequals(field, 'Client_Order__c'))}">
+                                    <lightning:inputField fieldName="{!field}" />
+
+                                    <aura:set attribute="else">
+                                        <lightning:inputField fieldName="{!field}" disabled="true" value="{!(equals(field, 'Client_Order__c'))? v.clientOrderId : v.clientId}"/>
+                                    </aura:set>
+                                </aura:if>
+
+                            </aura:iteration>
+
+                            <footer class="slds-modal__footer">
+                                <lightning:button class="slds-m-right_small" type="cancel" label="Cancel" onclick="{!c.handleCancel}" />
+                                <lightning:button variant="brand" type="submit" label="Save" />
+                            </footer>
+
+                        </lightning:recordEditForm>
+
+                    </div>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+
+    </aura:if>
+
+</aura:component>	
